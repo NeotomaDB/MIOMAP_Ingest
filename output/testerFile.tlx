@@ -1,0 +1,185 @@
+<TiliaFile>
+  <Version>
+    <Application>Tilia</Application>
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <Release>43</Release>
+  </Version>
+  <Site>
+    <SiteName>Cunningham Hill</SiteName>
+    <LatNorth>43.761665</LatNorth>
+    <LatSouth>43.761665</LatSouth>
+    <LongEast>-110.555298</LongEast>
+    <LongWest>-110.555298</LongWest>
+    <Altitude>NA</Altitude>
+    <Country>United States</Country>
+    <State>WY</State>
+    <County>Teton</County>
+    <Notes>NA</Notes>
+  </Site>
+  <CollectionUnit>
+    <Handle>UNITO</Handle>
+    <CollectionName>Unit O</CollectionName>
+  </CollectionUnit>
+  <Datasets>
+    <Dataset>
+      <Handle>UNITO</Handle>
+      <CollectionName>Unit O</CollectionName>
+    </Dataset>
+  </Datasets>
+  <Publications>
+    <Publication>
+      <Citation>Barnosky, A. D., 1986a, Arikareean, Hemingfordian, and Barstovian mammals from the Miocene Colter Formation, Jackson Hole, Teton County, Wyoming: Bulletin of Carnegie Museum of Natural History, v. 26, p. 1-69.</Citation>
+      <Citation>Barnosky, A. D., 1986b, New species of the Miocene rodent Cupidinimus (Heteromyidae) and some evolutionary relationships within the genus: Journal of Vertebrate Paleontology, v. 6, no. 1, p. 46-64.</Citation>
+      <Citation>Sutton, J. F., and Korth, W. W., 1995, Rodents (Mammalia) from the Barstovian (Miocene) Anceney local fauna, Montana: Annals of Carnegie Museum, v. 64, no. 4, p. 267-314.</Citation>
+      <Citation>Korth, W. W., 1997a, A new subfamily of primitive pocket mice (Rodentia, Heteromyidae) from the middle Tertiary of North America: Paludicola, v. 1, no. 2, p. 33-66.</Citation>
+      <Citation>Sutton, J. F., and Black, C. C., 1972, Oligocene and Miocene deposits of Jackson Hole, Wyoming, in West, R. M., ed., Guidebook for field conference on Tertiary biostratigraphy of southern and western Wyoming, Society of Verterbrate Paleontology, p. 73-79.</Citation>
+      <Citation>Black, C. C., 1968, Small mammals from the Colter Formation Jackson Hole, Wyoming, in Black, C. C., McKenna, M. C., and Robinson, P., eds., Field Conference Guidebook fro the high altitude and mountain basin deposits of Miocene age in Wyoming and Colorado: Boulder, University of Colorado Museum, p. 10-12.</Citation>
+      <Citation>Tedford, R. H., Albright, L. B., III, Barnosky, A. D., Ferrusquia-Villafranca, I., Hunt, R. M., Jr., Storer, J. E., Swisher, C. C., III, Voorhies, M. R., Webb, S. D., and Whistler, D. P., 2004, Mammalian biochronology of the Arikareean through Hemphillian interval (late Oligocene through early Pliocene epochs), in Woodburne, M. O., ed., Late Cretaceous and Cenozoic mammals of North America: biostratigraphy and geochronology: New York, Columbia University Press, p. 169-231.</Citation>
+      <Citation>Kraatz, B. P., and Barnosky, A. D., 2005, Barstovian ochotonids from Hepburn's Mesa, Park County, Montana, with comments on the biogeography and phylogeny of Oreolagus: Bulletin of Carnegie Museum of Natural History, v. 36, p. 121-136.</Citation>
+    </Publication>
+  </Publications>
+  <SpreadSheetBook>
+      <SpreadSheetOptions>
+        <HeaderRow>0</HeaderRow>
+        <FontName>Tahoma</FontName>
+        <FontSize>9</FontSize>
+        <DefaultColWidth>64</DefaultColWidth>
+        <DefaultRowHeight>18</DefaultRowHeight>
+        <PercentDecimalPlaces>1</PercentDecimalPlaces>
+        <CheckDupCodes>True</CheckDupCodes>
+        <CaseSensitiveCodes>False</CaseSensitiveCodes>
+        <CodesVisible>True</CodesVisible>
+        <ElementsVisible>True</ElementsVisible>
+        <UnitsVisible>True</UnitsVisible>
+        <ContextsVisible>False</ContextsVisible>
+        <TaphonomyVisible>False</TaphonomyVisible>
+        <GroupsVisible>True</GroupsVisible>
+      </SpreadSheetOptions>
+    <SpreadSheet page="0" name="Data">
+      <Col ID="1" Width="64">
+        <cell row="3">#ChronMiomap</cell>
+      </Col>
+      <Col ID="2" Width="64">
+        <cell rows="10">Merycodus</cell>
+        <cell rows="11">Talpidae</cell>
+        <cell rows="12">Scalopoides</cell>
+        <cell rows="13">Hypolagus</cell>
+        <cell rows="14">Ochotonidae</cell>
+        <cell rows="15">Merychippus</cell>
+        <cell rows="16">Monosaulax curtus</cell>
+        <cell rows="17">Schaubeumys</cell>
+        <cell rows="18">cf Pseudotheridomys pagei</cell>
+        <cell rows="19">Lignimus transversus</cell>
+        <cell rows="20">Mojavemys magnumarcus</cell>
+        <cell rows="21">Cupidinimus whitlocki</cell>
+        <cell rows="22">Mioheteromys amplissimus</cell>
+        <cell rows="23">Peridiomys</cell>
+        <cell rows="24">Perognathus furlongi</cell>
+        <cell rows="25">Proheteromys</cell>
+        <cell rows="26">Copemys niobrariensis</cell>
+        <cell rows="27">Sciuridae</cell>
+        <cell rows="28">cf Tamias ateles</cell>
+        <cell rows="29">Merycodus</cell>
+        <cell rows="30">Talpidae</cell>
+        <cell rows="31">Scalopoides</cell>
+        <cell rows="32">Hypolagus</cell>
+        <cell rows="33">Ochotonidae</cell>
+        <cell rows="34">Merychippus</cell>
+        <cell rows="35">Monosaulax curtus</cell>
+        <cell rows="36">Schaubeumys</cell>
+        <cell rows="37">cf Pseudotheridomys pagei</cell>
+        <cell rows="38">Lignimus transversus</cell>
+        <cell rows="39">Mojavemys magnumarcus</cell>
+        <cell rows="40">Cupidinimus whitlocki</cell>
+        <cell rows="41">Mioheteromys amplissimus</cell>
+        <cell rows="42">Peridiomys</cell>
+        <cell rows="43">Perognathus furlongi</cell>
+        <cell rows="44">Proheteromys</cell>
+        <cell rows="45">Copemys niobrariensis</cell>
+        <cell rows="46">Sciuridae</cell>
+        <cell rows="47">cf Tamias ateles</cell>
+      </Col>
+      <Col ID="3" Width="64">
+        <cell rows="10">MNI</cell>
+        <cell rows="11">MNI</cell>
+        <cell rows="12">MNI</cell>
+        <cell rows="13">MNI</cell>
+        <cell rows="14">MNI</cell>
+        <cell rows="15">MNI</cell>
+        <cell rows="16">MNI</cell>
+        <cell rows="17">MNI</cell>
+        <cell rows="18">MNI</cell>
+        <cell rows="19">MNI</cell>
+        <cell rows="20">MNI</cell>
+        <cell rows="21">MNI</cell>
+        <cell rows="22">MNI</cell>
+        <cell rows="23">MNI</cell>
+        <cell rows="24">MNI</cell>
+        <cell rows="25">MNI</cell>
+        <cell rows="26">MNI</cell>
+        <cell rows="27">MNI</cell>
+        <cell rows="28">MNI</cell>
+        <cell rows="29">NISP</cell>
+        <cell rows="30">NISP</cell>
+        <cell rows="31">NISP</cell>
+        <cell rows="32">NISP</cell>
+        <cell rows="33">NISP</cell>
+        <cell rows="34">NISP</cell>
+        <cell rows="35">NISP</cell>
+        <cell rows="36">NISP</cell>
+        <cell rows="37">NISP</cell>
+        <cell rows="38">NISP</cell>
+        <cell rows="39">NISP</cell>
+        <cell rows="40">NISP</cell>
+        <cell rows="41">NISP</cell>
+        <cell rows="42">NISP</cell>
+        <cell rows="43">NISP</cell>
+        <cell rows="44">NISP</cell>
+        <cell rows="45">NISP</cell>
+        <cell rows="46">NISP</cell>
+        <cell rows="47">NISP</cell>
+      </Col>
+      <Col ID="4" Width="64">
+        <cell rows="10">1</cell>
+        <cell rows="11">1</cell>
+        <cell rows="12">1</cell>
+        <cell rows="13">1</cell>
+        <cell rows="14">3</cell>
+        <cell rows="15">1</cell>
+        <cell rows="16">1</cell>
+        <cell rows="17">1</cell>
+        <cell rows="18">1</cell>
+        <cell rows="19">2</cell>
+        <cell rows="20">2</cell>
+        <cell rows="21">4</cell>
+        <cell rows="22">1</cell>
+        <cell rows="23">1</cell>
+        <cell rows="24">2</cell>
+        <cell rows="25">1</cell>
+        <cell rows="26">1</cell>
+        <cell rows="27">1</cell>
+        <cell rows="28">1</cell>
+        <cell rows="29">1</cell>
+        <cell rows="30">3</cell>
+        <cell rows="31">1</cell>
+        <cell rows="32">6</cell>
+        <cell rows="33">5</cell>
+        <cell rows="34">4</cell>
+        <cell rows="35">2</cell>
+        <cell rows="36">3</cell>
+        <cell rows="37">1</cell>
+        <cell rows="38">11</cell>
+        <cell rows="39">16</cell>
+        <cell rows="40">36</cell>
+        <cell rows="41">3</cell>
+        <cell rows="42">1</cell>
+        <cell rows="43">5</cell>
+        <cell rows="44">1</cell>
+        <cell rows="45">2</cell>
+        <cell rows="46">1</cell>
+        <cell rows="47">4</cell>
+      </Col>
+    </SpreadSheet>
+  </SpreadSheetBook>
+</TiliaFile>

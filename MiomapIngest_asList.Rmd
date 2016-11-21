@@ -1,0 +1,230 @@
+---
+title: "Ingesting MIOMAP - Starter"
+author: "Simon Goring"
+date: "November 13, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Connecting to the Database:
+
+We're going to construct an XML document for Tilia using the existing records in the MIOMAP database.  This database was provided for me by Edward Davis.  For MIOMAP the key field is the `MachineNumber`, which links across all tables.  Some of these tables seem pretty complex, but I'm going to write single functions for each set of variables that would be used.  Each of these functions will be called with a `MachineNumber` parameter, so that we can then run them individually, or package them together to run as a loop through the Database.
+
+```{r}
+library(RMySQL)
+library(dplyr)
+library(xml2)
+library(reshape2)
+
+```
+
+# Building the XML
+
+```{r}
+
+# Setting the header information:
+doc <- newXMLDoc()
+root <- newXMLNode("TiliaFile", doc = doc)
+newXMLNode("Version", .children = list(newXMLNode("Application", "Tilia"),
+                                newXMLNode("MajorVersion", "2"),
+                                newXMLNode("MinorVersion", "0"),
+                                newXMLNode("Release", "43")), parent = root)
+
+```
+
+With this, the XML document is established and we can start adding information into it.  Output will be passed in as an argument for each function, and then returned as well, so that it is overwritten as it goes through the process.
+
+For this process, we are generally returning some `data.frame` object from the SQL Queries & then passing it through 
+
+```{r}
+
+db_connect <- scan("hidden.txt", what = "character")
+
+send_query <- function(query) {
+  con <- dbConnect(RMySQL::MySQL(), dbname = db_connect[1], user = db_connect[2], password = db_connect[3])
+  new_query <-  dbSendQuery(conn = con, 
+                            statement = query)
+  
+  while (!dbHasCompleted(new_query)) {
+    if (!exists("query_response")) {
+      query_response <- dbFetch(new_query)
+    } else {
+      query_response <- rbind(query_response, dbFetch(new_query))
+    }
+  }
+  
+  dbClearResult(new_query)
+  dbDisconnect(con)
+  
+  return(query_response)
+  
+}
+
+```
+
+```{r}
+# Each row in "big_call" represents a unique collection unit & dataset.
+big_call <- send_query("SELECT DISTINCT loc.MachineNumber, loc.SiteName as SiteName, 
+                        loc.LatDec as LatNorth, loc.LatDec as LatSouth, loc.LongDec 
+                        as LongEast, loc.LongDec as LongWest,
+                        CONVERT(loc.Altitude USING utf8) as Altitude,
+                        loc.StateProv as State,
+                        loc.County as County,
+                        CONVERT(loc.Comment USING utf8) as Notes,
+                        faun.AnalysisUnit as CollectionUnit
+                        FROM locality AS loc INNER JOIN
+                        faunal as faun ON faun.MachineNumber = loc.MachineNumber")
+
+output_list <- list()
+
+```
+
+This is the big loop that should ultimately be applied to each element within MIOMAP.  Unfortunately, because it's a loop it's a bit annoying to actually comment through using Rmd.  The goal for this document is to functionalize each element, so that we can then comment out the explanation for the queries & link to outstanding issues in the [Issues tracking](https://github.com/NeotomaDB/MIOMAP_Ingest/issues) for this repository.
+
+```{r}
+
+for (i in 1:nrow(big_call)) {
+  output_list[[i]] <- mio_list
+  
+  output_list[[i]]$TiliaFile$Site <- list(SiteName = big_call$SiteName[i],
+                                          LatNorth = big_call$LatNorth[i],
+                                          LatSouth = big_call$LatSouth[i],
+                                          LongEast = big_call$LongEast[i],
+                                          LongWest = big_call$LongWest[i],
+                                          Altitude = big_call$Altitude[i],
+                                          Country  = "United States",
+                                          State    = big_call$State[i],
+                                          County   = big_call$County[i],
+                                          Notes    = big_call$Notes[i])
+  
+  output_list[[i]]$TiliaFile$CollectionUnit <- list(Handle = gsub(" ", "",
+                                                                  toupper(big_call$CollectionUnit[i])),
+                                                    CollectionName = big_call$CollectionUnit[i])
+  
+  output_list[[i]]$TiliaFile$Datasets <- list(Dataset = list(DatasetType = "vertebrate fauna",
+                                                             Name        = big_call$CollectionUnit[i],
+                                                             IsSSamp     = "FALSE"))
+  
+  # Pull the publication data:
+  
+  publications <- send_query(paste0("SELECT refer.Cite FROM machrefer INNER JOIN refer on machrefer.BibNum = refer.BibNum WHERE machrefer.MachineNumber =",big_call$MachineNumber[i]))
+  
+  publications <- lapply(unlist(publications), function(x)Publication <- list(Citation = x))
+  names(publications) <- rep("Publication", length(publications))
+  
+  output_list[[i]]$TiliaFile$Publication <- publications
+  
+  spreadsheetoptions <- list(HeaderRow = 0,
+                             FontName = "Tahoma",
+                             FontSize = 9,
+                             DefaultColWidth = 64,
+                             DefaultRowHeight = 18,
+                             PercentDecimalPlaces = 1,
+                             CheckDupCodes = "True",
+                             CaseSensitiveCodes = "False",
+                             CodesVisible = "True",
+                             ElementsVisible = "True",
+                             UnitsVisible = "True",
+                             ContextsVisible = "False",
+                             TaphonomyVisible = "False",
+                             GroupsVisible = "True")
+  
+  spreadsheet <- send_query(paste0("SELECT Class, TaxOrder, Family, Genus, Species, IDConf, MNI, ",
+                                   "NISP, COntext, Modif, Type FROM faunal WHERE faunal.AnalysisUnit = '",
+                                   output_list[[i]]$TiliaFile$CollectionUnit$CollectionName,
+                                   "' AND faunal.MachineNumber = ", big_call$MachineNumber[i]))
+  
+  taxa <- rep(NA, nrow(spreadsheet))
+  
+  for (i in 1:length(taxa)) {
+    if (!spreadsheet$Species[i] == "") {
+      taxa[i] <- paste0(ifelse(spreadsheet$IDConf[i] == "", "", 
+                               paste0(tolower(spreadsheet$IDConf[i]), " ")),
+                        spreadsheet$Genus[i], " ", spreadsheet$Species[i])
+    } else {
+      if (!spreadsheet$Genus[i] == "") {
+        taxa[i] <- paste0(ifelse(spreadsheet$IDConf[i] == "", "", 
+                               paste0(tolower(spreadsheet$IDConf[i]), " ")),
+                        spreadsheet$Genus[i])
+      } else {
+        if (!spreadsheet$Family[i] == "") {
+          taxa[i] <- paste0(ifelse(spreadsheet$IDConf[i] == "", "", 
+                               paste0(tolower(spreadsheet$IDConf[i]), " ")),
+                        spreadsheet$Family[i])
+        } else {
+          if (!spreadsheet$TaxOrder[i] == "") {
+            taxa[i] <- paste0(ifelse(spreadsheet$IDConf[i] == "", "", 
+                                     paste0(tolower(spreadsheet$IDConf[i]), " ")),
+                        spreadsheet$TaxOrder[i])
+          } else {
+            if (!spreadsheet$Class[i] == "") {
+            taxa[i] <- paste0(ifelse(spreadsheet$IDConf[i] == "", "", 
+                                     paste0(tolower(spreadsheet$IDConf[i]), " ")),
+                        spreadsheet$Class[i])
+        }
+          }
+        }
+      }
+    }
+  }
+
+  narrow_sheet <- data.frame(taxa, 
+                             MNI = spreadsheet$MNI, 
+                             NISP = spreadsheet$NISP)
+
+    # Now we need to put these things together:
+  newXMLNode("Site", .children = sapply(names(output_list[[i]]$TiliaFile$Site),
+                                        function(x)newXMLNode(x, output_list[[i]][[1]]$Site[x][[1]])), 
+             parent = root)
+  
+  newXMLNode("CollectionUnit", 
+             .children = sapply(names(output_list[[i]]$TiliaFile$CollectionUnit),
+                                function(x)newXMLNode(x, output_list[[i]][[1]]$CollectionUnit[x][[1]])),
+             parent = root)
+  
+  newXMLNode("Datasets", 
+             .children = newXMLNode("Dataset", 
+                                    .children = sapply(names(output_list[[i]]$TiliaFile$CollectionUnit),
+                                                       function(x)newXMLNode(x, output_list[[i]][[1]]$CollectionUnit[x][[1]]))),
+             parent = root)
+  
+  newXMLNode("Publications", 
+             .children = newXMLNode("Publication",
+                                    .children = sapply(1:length(output_list[[i]]$TiliaFile$Publication),
+                                function(x)newXMLNode("Citation", output_list[[i]][[1]]$Publication[[x]]$Citation[[1]]))),
+             parent = root)
+  
+  
+  ssbook <- newXMLNode("SpreadSheetBook", parent = root)
+  newXMLNode("SpreadSheetOptions", 
+             .children = sapply(names(spreadsheetoptions),
+                                function(x)newXMLNode(x, spreadsheetoptions[[x]][[1]])),
+             parent = ssbook)
+  
+  ssheet <- newXMLNode("SpreadSheet", attrs = c(page = "0", name = "Data"), 
+             .children = newXMLNode("Col", attrs = c(ID = 1, Width = "64"), 
+                                    .children = newXMLNode("cell", "#ChronMiomap", attrs = c(row = 3))),
+                                    parent = ssbook)
+
+  spreadsheet_wide <- melt(narrow_sheet, 
+                           id.vars = "taxa", 
+                           measure.vars = c("MNI", "NISP"), 
+                           variable.name = "value")
+  
+  for (i in 1:ncol(spreadsheet_wide)) {
+    col <- newXMLNode("Col", attrs = c(ID = i + 1, Width = "64"), parent = ssheet)
+    for (j in 1:nrow(spreadsheet_wide)) {
+      cells <- newXMLNode("cell", spreadsheet_wide[j,i], attrs = c(rows = 9 + j), parent = col)
+    }
+  }
+
+  saveXML(root, paste0("output/", big_call$MachineNumber[i], "_", 
+                       gsub(" ", "", big_call$SiteName[i]), 
+                       gsub(" ", "", big_call$CollectionUnit[i]), "_testerFile.tlx"))
+  
+}
+
+```
