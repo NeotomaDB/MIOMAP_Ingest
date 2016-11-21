@@ -33,3 +33,8 @@ This file is hidden using `.gitignore` so that individuals don't accidentally re
 
 ### Other Files
 
+The core file in this repository is the `MiomapIngest_asList.Rmd`.  The file is a prototype at present.  It serves to connect to the MySQL database, query the database for each fossil element, and then convert the data structure to the appropriate Tilia fields for conversion to the `TLX` format.
+
+The output `TLX` files are put into the `outputs` folder.
+
+The file is written as an `Rmd` to provide more detail into the decision making process around the cross-walk, but at present the focus has been on getting a workflow developed that will allow a basic TLX file to be generated.

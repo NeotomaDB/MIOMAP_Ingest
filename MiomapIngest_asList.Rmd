@@ -206,7 +206,7 @@ for (i in 1:nrow(big_call)) {
   
   ssheet <- newXMLNode("SpreadSheet", attrs = c(page = "0", name = "Data"), 
              .children = newXMLNode("Col", attrs = c(ID = 1, Width = "64"), 
-                                    .children = newXMLNode("cell", "#ChronMiomap", attrs = c(row = 3))),
+                                    .children = newXMLNode("cell", "#Chron1", attrs = c(row = 3))),
                                     parent = ssbook)
 
   spreadsheet_wide <- melt(narrow_sheet, 
