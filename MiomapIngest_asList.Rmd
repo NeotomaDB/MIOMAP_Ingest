@@ -18,7 +18,6 @@ library(RMySQL)
 library(dplyr)
 library(xml2)
 library(reshape2)
-
 ```
 
 # Building the XML
@@ -37,7 +36,7 @@ newXMLNode("Version", .children = list(newXMLNode("Application", "Tilia"),
 
 With this, the XML document is established and we can start adding information into it.  Output will be passed in as an argument for each function, and then returned as well, so that it is overwritten as it goes through the process.
 
-For this process, we are generally returning some `data.frame` object from the SQL Queries & then passing it through 
+For this process, we are generally returning some `data.frame` object from the SQL Queries & then passing it through a function that sticks it into a `list`, and then, turning it into an XML document.
 
 ```{r}
 
