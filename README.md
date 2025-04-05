@@ -1,3 +1,10 @@
+<!-- badges: start -->
+
+[![lifecycle](https://img.shields.io/badge/lifecycle-paused-orange.svg)](https://www.tidyverse.org/lifecycle/#paused)
+
+<!-- badges: end -->
+
+
 # MioMap Ingest Script
 
 MioMap (the Miocene Mammal Mapping Project) is a MySQL database of vertebrate fauna for the Miocene; more information can be found on the [MioMap webpage](http://www.ucmp.berkeley.edu/miomap/).  The database is hosted by the [University of California Museum of Paleontology](http://www.ucmp.berkeley.edu/).
